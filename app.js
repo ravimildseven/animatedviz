@@ -51,21 +51,27 @@
   }
 
   // ===== LAZY DATA LOADING =====
-  function loadTopicData(topic) {
+  function loadDataScript(url) {
     return new Promise((resolve, reject) => {
-      if (topic.loaded) {
-        resolve(window[topic.dataVar]);
-        return;
-      }
       const script = document.createElement("script");
-      script.src = topic.dataFile;
-      script.onload = () => {
-        topic.loaded = true;
-        resolve(window[topic.dataVar]);
-      };
-      script.onerror = () => reject(new Error(`Failed to load ${topic.dataFile}`));
-      document.head.appendChild(script);
+      script.src = url + "?v=" + Date.now();
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load ${url}`));
+      document.head.appendChild(script); // Use document.head as in original loadTopicData
     });
+  }
+
+  async function loadTopicData(topic) {
+    if (topic.loaded) {
+      return window[topic.dataVar];
+    }
+    try {
+      await loadDataScript(topic.dataFile);
+      topic.loaded = true;
+      return window[topic.dataVar];
+    } catch (e) {
+      throw new Error(`Failed to load topic data for ${topic.id}: ${e.message}`);
+    }
   }
 
   // ===== TOPIC SELECTION =====
@@ -187,7 +193,7 @@
     const totalFrames = state.topicData.frames.length;
     el.innerHTML = `
       <div class="sidebar-section">
-        <div class="sb-portrait" style="background:${frame.color}">${frame.initials || ""}</div>
+        <div class="sb-portrait" style="background:${frame.color}; ${frame.imageUrl ? `background-image: url('${frame.imageUrl}'); background-size: cover; background-position: center top; text-indent: -9999px; overflow: hidden;` : ''}">${frame.initials || ""}</div>
         <h2 class="sb-name">${escHtml(frame.name)}</h2>
         <p class="sb-subtitle">${escHtml(frame.title || "")}</p>
         <p class="sb-label">${escHtml(frame.displayYear || String(frame.year))}</p>
@@ -249,7 +255,7 @@
     el.innerHTML = `
       <div class="sidebar-section">
         <p class="section-title">🥇 Leading</p>
-        <div class="sb-portrait" style="background:${leader.color || "var(--color-primary)"};font-size:14px">
+        <div class="sb-portrait" style="background:${leader.color || "var(--color-primary)"};font-size:14px; ${leader.imageUrl ? `background-image: url('${leader.imageUrl}'); background-size: cover; background-position: center top; text-indent: -9999px; overflow: hidden;` : ''}">
           ${leader.name.split(" ").slice(0, 1).join("").slice(0, 4)}
         </div>
         <h2 class="sb-name">${escHtml(leader.name)}</h2>
@@ -516,11 +522,85 @@
     if (el) el.classList.toggle("hidden", !show);
   }
 
+  // ===== VIDEO EXPORT =====
+  function setupExportVideo() {
+    const exportBtn = document.getElementById("export-video-btn");
+    if (!exportBtn) return;
+
+    exportBtn.addEventListener("click", async () => {
+      if (!state.topicData) return;
+
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { displaySurface: "browser", frameRate: { ideal: 60 } },
+          audio: false
+        });
+
+        const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+        const chunks = [];
+
+        recorder.ondataavailable = e => {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = () => {
+          const blob = new Blob(chunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = `animated_history_${state.topicData.id}.webm`;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 100);
+          stream.getTracks().forEach(track => track.stop());
+          
+          exportBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export Video';
+          exportBtn.disabled = false;
+        };
+
+        exportBtn.disabled = true;
+        exportBtn.innerHTML = '<div class="loading-spinner" style="width:14px;height:14px;border-width:2px;border-top-color:#fff;"></div> Recording...';
+
+        recorder.start();
+
+        if (state.isPlaying) stopPlay();
+        state.frameIndex = 0;
+        renderFrame(0);
+        
+        // Let it render first frame before playing
+        setTimeout(() => {
+          togglePlay();
+
+          const checkFinish = setInterval(() => {
+            // If it reached the end and stopped playing
+            if (!state.isPlaying && state.frameIndex === state.topicData.frames.length - 1) {
+              if (recorder.state === "recording") recorder.stop();
+              clearInterval(checkFinish);
+            }
+          }, 500);
+
+          stream.getVideoTracks()[0].onended = () => {
+            clearInterval(checkFinish);
+            if (recorder.state === "recording") recorder.stop();
+          };
+        }, 500);
+
+      } catch (err) {
+        console.error("Video export cancelled or failed:", err);
+      }
+    });
+  }
+
   // ===== INIT =====
   function init() {
     buildTopicSelector();
     setupControls();
     setupThemeToggle();
+    setupExportVideo();
 
     // Check URL hash for initial topic
     const hash = window.location.hash.slice(1);

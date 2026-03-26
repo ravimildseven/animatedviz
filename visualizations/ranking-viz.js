@@ -115,6 +115,15 @@ const rankingViz = (function () {
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle");
 
+    // Image
+    entered.append("image")
+      .attr("class", "rank-image")
+      .attr("x", -56)
+      .attr("width", 24)
+      .attr("height", 24)
+      .attr("preserveAspectRatio", "xMidYMid slice")
+      .style("clip-path", "circle(12px at 12px 12px)");
+
     // Item name label
     entered.append("text")
       .attr("class", "rank-label")
@@ -164,15 +173,23 @@ const rankingViz = (function () {
       .attr("y", barH / 2)
       .text(d => `#${d.rank}`);
 
+    // Image Update
+    all.select(".rank-image")
+      .attr("y", barH / 2 - 12)
+      .attr("href", d => d.imageUrl || "")
+      .style("display", d => d.imageUrl ? "block" : "none");
+
     // Label
     all.select(".rank-label")
       .attr("y", d => d.sublabel ? barH / 2 - 7 : barH / 2)
-      .text(d => truncate(d.name, 22));
+      .attr("x", d => d.imageUrl ? -66 : -32)
+      .text(d => truncate(d.name, d.imageUrl ? 18 : 22));
 
     // Sublabel
     all.select(".rank-sublabel")
       .attr("y", barH / 2 + 8)
-      .text(d => truncate(d.sublabel || "", 20));
+      .attr("x", d => d.imageUrl ? -66 : -32)
+      .text(d => truncate(d.sublabel || "", d.imageUrl ? 16 : 20));
 
     // Value
     all.select(".rank-value")

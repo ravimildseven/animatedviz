@@ -7,6 +7,7 @@ var INDIA_PM = {
     {
       index: 0, year: 1947, displayYear: "1947–1964",
       name: "Jawaharlal Nehru", title: "1st Prime Minister",
+      imageUrl: "https://picsum.photos/seed/Nehru/200",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1947, endYear: 1964, termDuration: "17 years",
       color: "#1a6b3c", initials: "JN",
@@ -65,6 +66,7 @@ var INDIA_PM = {
     {
       index: 4, year: 1966, displayYear: "1966–1977",
       name: "Indira Gandhi", title: "4th Prime Minister (1st term)",
+      imageUrl: "https://picsum.photos/seed/Indira/200",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1966, endYear: 1977, termDuration: "11 years",
       color: "#a01a1a", initials: "IG",
@@ -96,6 +98,7 @@ var INDIA_PM = {
     {
       index: 6, year: 1979, displayYear: "1979–1984",
       name: "Indira Gandhi", title: "4th Prime Minister (2nd term)",
+      imageUrl: "https://picsum.photos/seed/Indira/200",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1979, endYear: 1984, termDuration: "5 years",
       color: "#a01a1a", initials: "IG",
@@ -190,6 +193,7 @@ var INDIA_PM = {
     {
       index: 12, year: 2014, displayYear: "2014–present",
       name: "Narendra Modi", title: "15th Prime Minister",
+      imageUrl: "https://picsum.photos/seed/Modi/200",
       party: "Bharatiya Janata Party (NDA)", partyShort: "BJP",
       startYear: 2014, endYear: 2024, termDuration: "10+ years",
       color: "#e05a00", initials: "NM",
