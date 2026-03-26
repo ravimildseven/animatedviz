@@ -22,7 +22,7 @@ const rankingViz = (function () {
     
     // Dynamic Responsive Margins!
     isMobile = container.clientWidth < 600;
-    MARGIN.left = isMobile ? 120 : 240;
+    MARGIN.left = isMobile ? 100 : 200;
     MARGIN.right = isMobile ? 50 : 90;
 
     // Compute global max value across all frames for stable x-axis
@@ -121,19 +121,10 @@ const rankingViz = (function () {
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle");
 
-    // Image
-    entered.append("image")
-      .attr("class", "rank-image")
-      .attr("x", -56)
-      .attr("width", 24)
-      .attr("height", 24)
-      .attr("preserveAspectRatio", "xMidYMid slice")
-      .style("clip-path", "circle(12px at 12px 12px)");
-
     // Item name label
     entered.append("text")
       .attr("class", "rank-label")
-      .attr("x", -32)
+      .attr("x", -10)
       .attr("y", barH / 2 - (topicData.itemLabel === "Building" ? 6 : 0))
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle");
@@ -141,7 +132,7 @@ const rankingViz = (function () {
     // Sublabel (below name)
     entered.append("text")
       .attr("class", "rank-sublabel")
-      .attr("x", isMobile ? -14 : -32)
+      .attr("x", -10)
       .attr("y", barH / 2 + 10)
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle");
@@ -179,23 +170,17 @@ const rankingViz = (function () {
       .attr("y", barH / 2)
       .text(d => `#${d.rank}`);
 
-    // Image Update
-    all.select(".rank-image")
-      .attr("y", barH / 2 - 12)
-      .attr("href", d => d.imageUrl || "")
-      .style("display", d => d.imageUrl ? "block" : "none");
-
     // Label
     all.select(".rank-label")
       .attr("y", d => d.sublabel ? barH / 2 - 7 : barH / 2)
-      .attr("x", d => d.imageUrl ? (isMobile ? -36 : -66) : (isMobile ? -10 : -32))
-      .text(d => truncate(d.name, isMobile ? (d.imageUrl ? 10 : 15) : (d.imageUrl ? 18 : 22)));
+      .attr("x", -10)
+      .text(d => truncate(d.name, isMobile ? 15 : 25));
 
     // Sublabel
     all.select(".rank-sublabel")
       .attr("y", barH / 2 + 8)
-      .attr("x", d => d.imageUrl ? (isMobile ? -36 : -66) : (isMobile ? -10 : -32))
-      .text(d => truncate(d.sublabel || "", isMobile ? 12 : 20));
+      .attr("x", -10)
+      .text(d => truncate(d.sublabel || "", isMobile ? 18 : 30));
 
     // Value
     all.select(".rank-value")

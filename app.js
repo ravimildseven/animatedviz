@@ -152,6 +152,23 @@
     try { history.replaceState(null, "", `#${topicId}`); } catch(e) { /* ignore */ }
   }
 
+  const wikiImageCache = {};
+
+  async function getWikipediaImageUrl(name) {
+    if (wikiImageCache[name] !== undefined) return wikiImageCache[name];
+    try {
+      // Use Wikipedia's robust summary API to extract official thumbnails securely
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (data.thumbnail && data.thumbnail.source) {
+         wikiImageCache[name] = data.thumbnail.source;
+         return data.thumbnail.source;
+      }
+    } catch(e) { console.warn("Wiki fetch failed for", name); }
+    wikiImageCache[name] = null;
+    return null;
+  }
+
   // ===== FRAME NAVIGATION =====
   function renderFrame(index) {
     state.frameIndex = index;
@@ -185,7 +202,6 @@
     // Display massive image adjacent to D3 visualization or a placeholder
     const imgDisplay = document.getElementById("viz-image-display");
     if (imgDisplay) {
-      // Create or get placeholder div and image
       let placeholder = document.getElementById("viz-image-placeholder");
       if (!placeholder) {
          placeholder = document.createElement("div");
@@ -206,11 +222,25 @@
               dynamicImg.onload = () => { dynamicImg.style.opacity = '1'; };
            }, 150);
         }
-      } else {
-        dynamicImg.style.display = 'none';
-        placeholder.style.display = 'flex';
-        // Produce initials from name
-        placeholder.textContent = leaderName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+      } else if (leaderName) {
+        // AI/API Fallback: Automatically fetch real images from Wikipedia!
+        getWikipediaImageUrl(leaderName).then(wikiUrl => {
+           // Prevent async race condition overwrites if frame advanced
+           if (state.frameIndex !== index) return;
+           if (wikiUrl) {
+              placeholder.style.display = 'none';
+              if (dynamicImg.src !== wikiUrl) {
+                 dynamicImg.style.opacity = '0';
+                 dynamicImg.src = wikiUrl;
+                 dynamicImg.style.display = 'block';
+                 dynamicImg.onload = () => { dynamicImg.style.opacity = '1'; };
+              }
+           } else {
+              dynamicImg.style.display = 'none';
+              placeholder.style.display = 'flex';
+              placeholder.textContent = leaderName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+           }
+        });
       }
     }
   }
