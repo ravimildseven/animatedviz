@@ -63,7 +63,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 1930, label: "1930",
       items: [
-        { rank: 1, name: "Chrysler Building", sublabel: "New York, USA", value: 319, color: "#c04040", note: "World's tallest for just 11 months", imageUrl: "https://picsum.photos/seed/Chrysler/200" },
+        { rank: 1, name: "Chrysler Building", sublabel: "New York, USA", value: 319, color: "#c04040", note: "World's tallest for just 11 months", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Chrysler_Building_by_David_Shankbone.jpg/440px-Chrysler_Building_by_David_Shankbone.jpg" },
         { rank: 2, name: "40 Wall Street", sublabel: "New York, USA", value: 283, color: "#4878d0", note: "" },
         { rank: 3, name: "Woolworth Building", sublabel: "New York, USA", value: 241, color: "#4878d0", note: "" },
         { rank: 4, name: "Metropolitan Life Tower", sublabel: "New York, USA", value: 213, color: "#4878d0", note: "" },
@@ -73,7 +73,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 1931, label: "1931",
       items: [
-        { rank: 1, name: "Empire State Building", sublabel: "New York, USA", value: 443, color: "#c04040", note: "Held world record for 40 years (1931–1971)", imageUrl: "https://picsum.photos/seed/Empire/200" },
+        { rank: 1, name: "Empire State Building", sublabel: "New York, USA", value: 443, color: "#c04040", note: "Held world record for 40 years (1931–1971)", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/440px-Empire_State_Building_%28aerial_view%29.jpg" },
         { rank: 2, name: "Chrysler Building", sublabel: "New York, USA", value: 319, color: "#4878d0", note: "" },
         { rank: 3, name: "40 Wall Street", sublabel: "New York, USA", value: 283, color: "#4878d0", note: "" },
         { rank: 4, name: "Woolworth Building", sublabel: "New York, USA", value: 241, color: "#4878d0", note: "" },
@@ -93,7 +93,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 1974, label: "1974",
       items: [
-        { rank: 1, name: "Sears Tower (Willis)", sublabel: "Chicago, USA", value: 442, color: "#c04040", note: "World's tallest 1974–1998", imageUrl: "https://picsum.photos/seed/Sears/200" },
+        { rank: 1, name: "Sears Tower (Willis)", sublabel: "Chicago, USA", value: 442, color: "#c04040", note: "World's tallest 1974–1998", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Willis_Tower_From_Lake_2011.jpg/440px-Willis_Tower_From_Lake_2011.jpg" },
         { rank: 2, name: "World Trade Center (N)", sublabel: "New York, USA", value: 417, color: "#4878d0", note: "" },
         { rank: 3, name: "Empire State Building", sublabel: "New York, USA", value: 381, color: "#4878d0", note: "" },
         { rank: 4, name: "John Hancock Center", sublabel: "Chicago, USA", value: 344, color: "#6b94d6", note: "" },
@@ -116,7 +116,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 2004, label: "2004",
       items: [
-        { rank: 1, name: "Taipei 101", sublabel: "Taipei, Taiwan", value: 508, color: "#c04040", note: "World's tallest 2004–2010", imageUrl: "https://picsum.photos/seed/Taipei/200" },
+        { rank: 1, name: "Taipei 101", sublabel: "Taipei, Taiwan", value: 508, color: "#c04040", note: "World's tallest 2004–2010", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Taipei101.portrait.altonthompson.jpg/440px-Taipei101.portrait.altonthompson.jpg" },
         { rank: 2, name: "Petronas Towers", sublabel: "Kuala Lumpur, Malaysia", value: 452, color: "#8b3a3a", note: "" },
         { rank: 3, name: "Sears Tower (Willis)", sublabel: "Chicago, USA", value: 442, color: "#4878d0", note: "" },
         { rank: 4, name: "Jin Mao Tower", sublabel: "Shanghai, China", value: 421, color: "#c84040", note: "" },
@@ -129,7 +129,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 2010, label: "2010",
       items: [
-        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "World's tallest since 2010 — smashed all previous records", imageUrl: "https://picsum.photos/seed/Burj/200" },
+        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "World's tallest since 2010 — smashed all previous records", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Burj_Khalifa_-_20230421113018.jpg/440px-Burj_Khalifa_-_20230421113018.jpg" },
         { rank: 2, name: "Taipei 101", sublabel: "Taipei, Taiwan", value: 508, color: "#c84040", note: "" },
         { rank: 3, name: "Shanghai World Financial", sublabel: "Shanghai, China", value: 492, color: "#c84040", note: "" },
         { rank: 4, name: "International Commerce", sublabel: "Hong Kong, China", value: 484, color: "#c84040", note: "" },
@@ -144,7 +144,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 2016, label: "2016",
       items: [
-        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "Still record holder", imageUrl: "https://picsum.photos/seed/Burj/200" },
+        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "Still record holder", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Burj_Khalifa_-_20230421113018.jpg/440px-Burj_Khalifa_-_20230421113018.jpg" },
         { rank: 2, name: "Shanghai Tower", sublabel: "Shanghai, China", value: 632, color: "#c84040", note: "Completed 2015" },
         { rank: 3, name: "Makkah Clock Tower", sublabel: "Mecca, Saudi Arabia", value: 601, color: "#8b4040", note: "" },
         { rank: 4, name: "Ping An Finance", sublabel: "Shenzhen, China", value: 599, color: "#c84040", note: "" },
@@ -159,7 +159,7 @@ var TALLEST_BUILDINGS = {
     {
       year: 2024, label: "2024",
       items: [
-        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "Still tallest in the world — 14 years at #1", imageUrl: "https://picsum.photos/seed/Burj/200" },
+        { rank: 1, name: "Burj Khalifa", sublabel: "Dubai, UAE", value: 828, color: "#c04040", note: "Still tallest in the world — 14 years at #1", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Burj_Khalifa_-_20230421113018.jpg/440px-Burj_Khalifa_-_20230421113018.jpg" },
         { rank: 2, name: "Merdeka 118", sublabel: "Kuala Lumpur, Malaysia", value: 678, color: "#8b4040", note: "Completed 2023" },
         { rank: 3, name: "Shanghai Tower", sublabel: "Shanghai, China", value: 632, color: "#c84040", note: "" },
         { rank: 4, name: "Makkah Clock Tower", sublabel: "Mecca, Saudi Arabia", value: 601, color: "#8b4040", note: "" },
