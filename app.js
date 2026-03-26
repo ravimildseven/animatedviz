@@ -233,17 +233,22 @@
            const wrapper = document.createElement("div");
            wrapper.className = topItems.length > 1 ? "stack-card" : "single-card";
            
+           const placeholder = document.createElement("div");
+           placeholder.className = "img-placeholder";
+           placeholder.textContent = item.displayName
+             ? item.displayName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase()
+             : (item.name ? item.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() : '??');
+           
            const img = document.createElement("img");
            img.className = "dynamic-img";
-           img.style.opacity = '0'; 
+           // Critical: must be block-level + fill the card before transition
+           img.style.cssText = 'display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.4s ease; border-radius:inherit;';
            
            const label = document.createElement("div");
            label.className = "stack-label";
-           label.textContent = topItems.length > 1 ? `#${idx+1} ${item.name}` : item.name;
-           
-           const placeholder = document.createElement("div");
-           placeholder.className = "img-placeholder";
-           placeholder.textContent = item.name ? item.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() : "??";
+           label.textContent = topItems.length > 1
+             ? `#${idx+1} ${item.displayName || item.name}`
+             : (item.displayName || item.name);
            
            wrapper.appendChild(placeholder);
            wrapper.appendChild(img);
@@ -251,16 +256,21 @@
            inner.appendChild(wrapper);
            
            // Fetch and Fade Logic
+           const revealImg = (url) => {
+              img.src = url;
+              img.onload = () => {
+                img.style.opacity = '1';
+                placeholder.style.display = 'none';
+              };
+              img.onerror = () => { /* Keep placeholder visible on error */ };
+           };
+
            if (item.imageUrl) {
-              img.src = item.imageUrl;
-              img.onload = () => { img.style.opacity = '1'; placeholder.style.opacity = '0'; };
+              revealImg(item.imageUrl);
            } else if (item.name) {
               getWikipediaImageUrl(item.name).then(wikiUrl => {
-                 if (inner.dataset.currentSignature !== cacheSignature) return; // Stale data abort
-                 if (wikiUrl) {
-                    img.src = wikiUrl;
-                    img.onload = () => { img.style.opacity = '1'; placeholder.style.opacity = '0'; };
-                 }
+                 if (inner.dataset.currentSignature !== cacheSignature) return;
+                 if (wikiUrl) revealImg(wikiUrl);
               });
            }
          });

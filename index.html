@@ -87,6 +87,13 @@
 
         <!-- Viz Content Wrapper (Split Screen) -->
         <div class="viz-content-wrapper" id="viz-content-wrapper">
+          <!-- Right side: The Dynamic Image Panel — comes first in DOM so mobile shows it at top -->
+          <div class="viz-image-display" id="viz-image-display">
+            <div class="viz-image-inner">
+               <!-- Populated seamlessly by Javascript (Single or Stack mode) -->
+            </div>
+          </div>
+
           <!-- Left side: The SVG map / bar chart -->
           <div class="viz-container" id="viz-container">
             <!-- Loading state -->
@@ -104,13 +111,6 @@
             <div class="viz-watermark" id="viz-watermark">
               <svg width="12" height="12" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="24" height="24" rx="4"/><path d="M14 6v8l4 4"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
               Animated History
-            </div>
-          </div>
-
-          <!-- Right side: The Dynamic Image Panel (e.g. comparing height) -->
-          <div class="viz-image-display" id="viz-image-display">
-            <div class="viz-image-inner">
-               <!-- Populated seamlessly by Javascript (Single or Stack mode) -->
             </div>
           </div>
         </div>
