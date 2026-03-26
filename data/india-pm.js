@@ -7,7 +7,7 @@ var INDIA_PM = {
     {
       index: 0, year: 1947, displayYear: "1947–1964",
       name: "Jawaharlal Nehru", title: "1st Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Jawaharlal_Nehru_1948.jpg/440px-Jawaharlal_Nehru_1948.jpg",
+      wikiSearchName: "Jawaharlal Nehru",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1947, endYear: 1964, termDuration: "17 years",
       color: "#1a6b3c", initials: "JN",
@@ -24,7 +24,7 @@ var INDIA_PM = {
     {
       index: 1, year: 1964, displayYear: "Jun–Aug 1964",
       name: "Gulzarilal Nanda", title: "2nd Prime Minister (Acting)",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Gulzarilal_Nanda.jpg/440px-Gulzarilal_Nanda.jpg",
+      wikiSearchName: "Gulzarilal Nanda",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1964, endYear: 1964, termDuration: "13 days",
       color: "#2d9e5f", initials: "GN",
@@ -39,7 +39,7 @@ var INDIA_PM = {
     {
       index: 2, year: 1964, displayYear: "1964–1966",
       name: "Lal Bahadur Shastri", title: "3rd Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Lal_Bahadur_Shastri_1964.jpg/440px-Lal_Bahadur_Shastri_1964.jpg",
+      wikiSearchName: "Lal Bahadur Shastri",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1964, endYear: 1966, termDuration: "18 months",
       color: "#1a6b3c", initials: "LBS",
@@ -54,7 +54,7 @@ var INDIA_PM = {
     {
       index: 3, year: 1966, displayYear: "Jan 1966",
       name: "Gulzarilal Nanda", title: "2nd Prime Minister (Acting, 2nd time)",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Gulzarilal_Nanda.jpg/440px-Gulzarilal_Nanda.jpg",
+      wikiSearchName: "Gulzarilal Nanda",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1966, endYear: 1966, termDuration: "13 days",
       color: "#2d9e5f", initials: "GN",
@@ -69,7 +69,7 @@ var INDIA_PM = {
     {
       index: 4, year: 1966, displayYear: "1966–1977",
       name: "Indira Gandhi", title: "4th Prime Minister (1st term)",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Indira_Gandhi%2C_official_photo_portrait%2C_1977.jpg/440px-Indira_Gandhi%2C_official_photo_portrait%2C_1977.jpg",
+      wikiSearchName: "Indira Gandhi",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1966, endYear: 1977, termDuration: "11 years",
       color: "#a01a1a", initials: "IG",
@@ -86,7 +86,7 @@ var INDIA_PM = {
     {
       index: 5, year: 1977, displayYear: "1977–1979",
       name: "Morarji Desai", title: "5th Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Morarji_Desai_1978.jpg/440px-Morarji_Desai_1978.jpg",
+      wikiSearchName: "Morarji Desai",
       party: "Janata Party", partyShort: "JP",
       startYear: 1977, endYear: 1979, termDuration: "2 years",
       color: "#c47a20", initials: "MD",
@@ -102,7 +102,7 @@ var INDIA_PM = {
     {
       index: 6, year: 1979, displayYear: "1979–1984",
       name: "Indira Gandhi", title: "4th Prime Minister (2nd term)",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Indira_Gandhi%2C_official_photo_portrait%2C_1977.jpg/440px-Indira_Gandhi%2C_official_photo_portrait%2C_1977.jpg",
+      wikiSearchName: "Indira Gandhi",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1979, endYear: 1984, termDuration: "5 years",
       color: "#a01a1a", initials: "IG",
@@ -118,7 +118,7 @@ var INDIA_PM = {
     {
       index: 7, year: 1984, displayYear: "1984–1989",
       name: "Rajiv Gandhi", title: "6th Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Rajiv_Gandhi.jpg/440px-Rajiv_Gandhi.jpg",
+      wikiSearchName: "Rajiv Gandhi",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1984, endYear: 1989, termDuration: "5 years",
       color: "#1a6b3c", initials: "RG",
@@ -134,8 +134,8 @@ var INDIA_PM = {
     },
     {
       index: 8, year: 1989, displayYear: "1989–1991",
-      name: "V.P. Singh & Others", title: "7th–9th Prime Ministers",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vishwanath_Pratap_Singh.jpg/440px-Vishwanath_Pratap_Singh.jpg",
+      name: "V.P. Singh", title: "7th–9th Prime Ministers",
+      wikiSearchName: "Vishwanath Pratap Singh",
       party: "Multiple Coalitions", partyShort: "Various",
       startYear: 1989, endYear: 1991, termDuration: "2 years",
       color: "#6b6b6b", initials: "VP",
@@ -151,7 +151,7 @@ var INDIA_PM = {
     {
       index: 9, year: 1991, displayYear: "1991–1996",
       name: "P.V. Narasimha Rao", title: "10th Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/PV_Narasimha_Rao.jpg/440px-PV_Narasimha_Rao.jpg",
+      wikiSearchName: "P. V. Narasimha Rao",
       party: "Indian National Congress", partyShort: "INC",
       startYear: 1991, endYear: 1996, termDuration: "5 years",
       color: "#1a6b3c", initials: "PVNR",
@@ -167,8 +167,8 @@ var INDIA_PM = {
     },
     {
       index: 10, year: 1996, displayYear: "1996–2004",
-      name: "HD Deve Gowda, I.K. Gujral & Atal Bihari Vajpayee", title: "11th–13th Prime Ministers",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Atal_Bihari_Vajpayee_in_2002.jpg/440px-Atal_Bihari_Vajpayee_in_2002.jpg",
+      name: "Atal Bihari Vajpayee", title: "11th–13th Prime Ministers",
+      wikiSearchName: "Atal Bihari Vajpayee",
       party: "Multiple Coalitions / BJP", partyShort: "Various/BJP",
       startYear: 1996, endYear: 2004, termDuration: "8 years",
       color: "#d05010", initials: "ABV",
@@ -185,7 +185,7 @@ var INDIA_PM = {
     {
       index: 11, year: 2004, displayYear: "2004–2014",
       name: "Manmohan Singh", title: "14th Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Manmohan_Singh_2014.jpg/440px-Manmohan_Singh_2014.jpg",
+      wikiSearchName: "Manmohan Singh",
       party: "Indian National Congress (UPA)", partyShort: "INC",
       startYear: 2004, endYear: 2014, termDuration: "10 years",
       color: "#1a6b3c", initials: "MS",
@@ -202,7 +202,7 @@ var INDIA_PM = {
     {
       index: 12, year: 2014, displayYear: "2014–present",
       name: "Narendra Modi", title: "15th Prime Minister",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Narendra_Modi_in_2023.jpg/440px-Narendra_Modi_in_2023.jpg",
+      wikiSearchName: "Narendra Modi",
       party: "Bharatiya Janata Party (NDA)", partyShort: "BJP",
       startYear: 2014, endYear: 2024, termDuration: "10+ years",
       color: "#e05a00", initials: "NM",

@@ -205,8 +205,10 @@
       
     } else if (state.topicData.vizType === "timeline") {
       topItems = [{ 
-        name: frame.label || frame.year || "", 
-        imageUrl: frame.imageUrl || "" 
+        // Use wikiSearchName for precise lookup, then actual name, then year as fallback
+        name: frame.wikiSearchName || frame.name || frame.label || String(frame.year),
+        imageUrl: frame.imageUrl || "",
+        displayName: frame.name || frame.label || String(frame.year)
       }];
     }
     
