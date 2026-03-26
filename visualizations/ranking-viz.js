@@ -12,8 +12,8 @@ const rankingViz = (function () {
   let xScale, maxValue;
   let isMobile = false;
   let MARGIN = { top: 16, right: 90, bottom: 36, left: 240 };
-  const BAR_HEIGHT = 32;
-  const BAR_GAP = 8;
+  const BAR_HEIGHT = 36;
+  const BAR_GAP = 16;
   const MAX_ITEMS = 10;
 
   function init(data, container) {
@@ -22,7 +22,7 @@ const rankingViz = (function () {
     
     // Dynamic Responsive Margins!
     isMobile = container.clientWidth < 600;
-    MARGIN.left = isMobile ? 100 : 200;
+    MARGIN.left = isMobile ? 140 : 250;
     MARGIN.right = isMobile ? 50 : 90;
 
     // Compute global max value across all frames for stable x-axis
