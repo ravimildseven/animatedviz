@@ -167,6 +167,52 @@
 
     if (state.currentViz) state.currentViz.renderFrame(index);
     updateSidebar();
+
+    // Extract dynamic image for side-by-side perspective view
+    let leaderBg = "";
+    let leaderName = "";
+    if (state.topicData.vizType === "ranking" && frame.items && frame.items[0]) {
+      leaderBg = frame.items[0].imageUrl || "";
+      leaderName = frame.items[0].name || "";
+    } else if (state.topicData.vizType === "timeline") {
+      leaderBg = frame.imageUrl || "";
+      leaderName = frame.label || frame.year || "";
+    }
+    
+    const body = document.body;
+    if (body) { body.style.backgroundImage = "none"; }
+    
+    // Display massive image adjacent to D3 visualization or a placeholder
+    const imgDisplay = document.getElementById("viz-image-display");
+    if (imgDisplay) {
+      // Create or get placeholder div and image
+      let placeholder = document.getElementById("viz-image-placeholder");
+      if (!placeholder) {
+         placeholder = document.createElement("div");
+         placeholder.id = "viz-image-placeholder";
+         placeholder.style.cssText = "width: 200px; height: 200px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: bold; box-shadow: var(--shadow-md); transition: opacity 0.3s ease;";
+         imgDisplay.querySelector(".viz-image-inner").appendChild(placeholder);
+      }
+      
+      const dynamicImg = document.getElementById("viz-dynamic-img");
+      
+      if (leaderBg) {
+        placeholder.style.display = 'none';
+        if (dynamicImg.src !== leaderBg) {
+           dynamicImg.style.opacity = '0';
+           setTimeout(() => {
+              dynamicImg.src = leaderBg;
+              dynamicImg.style.display = 'block';
+              dynamicImg.onload = () => { dynamicImg.style.opacity = '1'; };
+           }, 150);
+        }
+      } else {
+        dynamicImg.style.display = 'none';
+        placeholder.style.display = 'flex';
+        // Produce initials from name
+        placeholder.textContent = leaderName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+      }
+    }
   }
 
   // ===== SIDEBAR =====
@@ -531,12 +577,25 @@
       if (!state.topicData) return;
 
       try {
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-          video: { displaySurface: "browser", frameRate: { ideal: 60 } },
-          audio: false
-        });
+        exportBtn.disabled = true;
+        exportBtn.innerHTML = '<div class="loading-spinner" style="width:14px;height:14px;border-width:2px;border-top-color:#fff;"></div> Rendering...';
 
-        const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+        const mainLayout = document.querySelector(".main-layout");
+        const canvas = document.createElement("canvas");
+        canvas.width = mainLayout.offsetWidth || 1280;
+        canvas.height = mainLayout.offsetHeight || 720;
+        const ctx = canvas.getContext("2d");
+        
+        // Use hidden captureStream directly without prompting user
+        const stream = canvas.captureStream(30);
+        // Attempt MP4 encoding if browser supports it, otherwise WebM
+        let mime = 'video/mp4; codecs=avc1';
+        let ext = 'mp4';
+        if (!MediaRecorder.isTypeSupported(mime)) {
+           mime = 'video/webm; codecs=vp9';
+           ext = 'webm';
+        }
+        const recorder = new MediaRecorder(stream, { mimeType: mime });
         const chunks = [];
 
         recorder.ondataavailable = e => {
@@ -544,12 +603,12 @@
         };
 
         recorder.onstop = () => {
-          const blob = new Blob(chunks, { type: 'video/webm' });
+          const blob = new Blob(chunks, { type: mime.split(';')[0] });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.style.display = 'none';
           a.href = url;
-          a.download = `animated_history_${state.topicData.id}.webm`;
+          a.download = `animated_history_${state.topicData.id}.${ext}`;
           document.body.appendChild(a);
           a.click();
           setTimeout(() => {
@@ -562,9 +621,6 @@
           exportBtn.disabled = false;
         };
 
-        exportBtn.disabled = true;
-        exportBtn.innerHTML = '<div class="loading-spinner" style="width:14px;height:14px;border-width:2px;border-top-color:#fff;"></div> Recording...';
-
         recorder.start();
 
         if (state.isPlaying) stopPlay();
@@ -575,22 +631,35 @@
         setTimeout(() => {
           togglePlay();
 
-          const checkFinish = setInterval(() => {
-            // If it reached the end and stopped playing
-            if (!state.isPlaying && state.frameIndex === state.topicData.frames.length - 1) {
-              if (recorder.state === "recording") recorder.stop();
-              clearInterval(checkFinish);
-            }
-          }, 500);
-
-          stream.getVideoTracks()[0].onended = () => {
-            clearInterval(checkFinish);
-            if (recorder.state === "recording") recorder.stop();
+          let isCapturing = true;
+          const captureLoop = async () => {
+             // Loop asynchronously, yielding to the main thread so D3 transitions process, 
+             // and html2canvas doesn't freeze the browser totally
+             while (isCapturing && (state.isPlaying || state.frameIndex < state.topicData.frames.length - 1)) {
+                try {
+                   // Background color set specifically for glassmorphism layout
+                   const tempC = await html2canvas(mainLayout, { scale: 1, useCORS: true, backgroundColor: "#0f172a" });
+                   ctx.clearRect(0, 0, canvas.width, canvas.height);
+                   ctx.drawImage(tempC, 0, 0, canvas.width, canvas.height);
+                } catch(e) { console.error("Canvas snap failed", e); }
+                
+                // Yield thread to let the next frame of the animation step forward
+                await new Promise(r => setTimeout(r, 60));
+             }
+             
+             // Stop recorder gracefully
+             if (recorder.state === "recording") recorder.stop();
+             isCapturing = false;
           };
+          
+          captureLoop();
+
         }, 500);
 
       } catch (err) {
         console.error("Video export cancelled or failed:", err);
+        exportBtn.innerHTML = 'Export Failed';
+        exportBtn.disabled = false;
       }
     });
   }

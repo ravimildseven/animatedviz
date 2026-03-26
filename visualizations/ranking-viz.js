@@ -10,7 +10,8 @@ const rankingViz = (function () {
   let containerEl = null;
   let width = 0, height = 0;
   let xScale, maxValue;
-  const MARGIN = { top: 16, right: 90, bottom: 36, left: 160 };
+  let isMobile = false;
+  let MARGIN = { top: 16, right: 90, bottom: 36, left: 240 };
   const BAR_HEIGHT = 32;
   const BAR_GAP = 8;
   const MAX_ITEMS = 10;
@@ -18,6 +19,11 @@ const rankingViz = (function () {
   function init(data, container) {
     topicData = data;
     containerEl = container;
+    
+    // Dynamic Responsive Margins!
+    isMobile = container.clientWidth < 600;
+    MARGIN.left = isMobile ? 120 : 240;
+    MARGIN.right = isMobile ? 50 : 90;
 
     // Compute global max value across all frames for stable x-axis
     maxValue = 0;
@@ -135,7 +141,7 @@ const rankingViz = (function () {
     // Sublabel (below name)
     entered.append("text")
       .attr("class", "rank-sublabel")
-      .attr("x", -32)
+      .attr("x", isMobile ? -14 : -32)
       .attr("y", barH / 2 + 10)
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle");
@@ -182,14 +188,14 @@ const rankingViz = (function () {
     // Label
     all.select(".rank-label")
       .attr("y", d => d.sublabel ? barH / 2 - 7 : barH / 2)
-      .attr("x", d => d.imageUrl ? -66 : -32)
-      .text(d => truncate(d.name, d.imageUrl ? 18 : 22));
+      .attr("x", d => d.imageUrl ? (isMobile ? -36 : -66) : (isMobile ? -10 : -32))
+      .text(d => truncate(d.name, isMobile ? (d.imageUrl ? 10 : 15) : (d.imageUrl ? 18 : 22)));
 
     // Sublabel
     all.select(".rank-sublabel")
       .attr("y", barH / 2 + 8)
-      .attr("x", d => d.imageUrl ? -66 : -32)
-      .text(d => truncate(d.sublabel || "", d.imageUrl ? 16 : 20));
+      .attr("x", d => d.imageUrl ? (isMobile ? -36 : -66) : (isMobile ? -10 : -32))
+      .text(d => truncate(d.sublabel || "", isMobile ? 12 : 20));
 
     // Value
     all.select(".rank-value")
