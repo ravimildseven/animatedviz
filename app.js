@@ -185,62 +185,83 @@
     if (state.currentViz) state.currentViz.renderFrame(index);
     updateSidebar();
 
-    // Extract dynamic image for side-by-side perspective view
-    let leaderBg = "";
-    let leaderName = "";
-    if (state.topicData.vizType === "ranking" && frame.items && frame.items[0]) {
-      leaderBg = frame.items[0].imageUrl || "";
-      leaderName = frame.items[0].name || "";
+    // Extract dynamic images for side-by-side perspective stack
+    let topItems = [];
+    if (state.topicData.vizType === "ranking" && frame.items) {
+      let maxImages = 1;
+      // For topics like Economics, Space, etc., a stack is visually richer
+      const stackTopics = ['space-missions', 'olympic-medals', 'global-gdp', 'world-population', 'spoken-languages'];
+      if (stackTopics.includes(state.topicData.id)) {
+         maxImages = 3;
+      }
+      topItems = frame.items.slice(0, maxImages);
+      
+    } else if (state.topicData.id === "world-cup") {
+      // Map visualizations don't have .items, so we explicitly map the top stats!
+      topItems = [
+         { name: frame.winner, imageUrl: "" },
+         { name: frame.runnerUp, imageUrl: "" }
+      ];
+      
     } else if (state.topicData.vizType === "timeline") {
-      leaderBg = frame.imageUrl || "";
-      leaderName = frame.label || frame.year || "";
+      topItems = [{ 
+        name: frame.label || frame.year || "", 
+        imageUrl: frame.imageUrl || "" 
+      }];
     }
     
     const body = document.body;
     if (body) { body.style.backgroundImage = "none"; }
     
-    // Display massive image adjacent to D3 visualization or a placeholder
+    // Display dynamic images in the side panel
     const imgDisplay = document.getElementById("viz-image-display");
     if (imgDisplay) {
-      let placeholder = document.getElementById("viz-image-placeholder");
-      if (!placeholder) {
-         placeholder = document.createElement("div");
-         placeholder.id = "viz-image-placeholder";
-         placeholder.style.cssText = "width: 200px; height: 200px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: bold; box-shadow: var(--shadow-md); transition: opacity 0.3s ease;";
-         imgDisplay.querySelector(".viz-image-inner").appendChild(placeholder);
-      }
+      const inner = imgDisplay.querySelector(".viz-image-inner");
       
-      const dynamicImg = document.getElementById("viz-dynamic-img");
+      // We only want to rebuild the multi-image DOM if the top items actually CHANGED.
+      // This totally prevents 60fps rendering jitter and eliminates abusive network API calls.
+      const cacheSignature = topItems.map(i => i.name).join("|");
       
-      if (leaderBg) {
-        placeholder.style.display = 'none';
-        if (dynamicImg.src !== leaderBg) {
-           dynamicImg.style.opacity = '0';
-           setTimeout(() => {
-              dynamicImg.src = leaderBg;
-              dynamicImg.style.display = 'block';
-              dynamicImg.onload = () => { dynamicImg.style.opacity = '1'; };
-           }, 150);
-        }
-      } else if (leaderName) {
-        // AI/API Fallback: Automatically fetch real images from Wikipedia!
-        getWikipediaImageUrl(leaderName).then(wikiUrl => {
-           // Prevent async race condition overwrites if frame advanced
-           if (state.frameIndex !== index) return;
-           if (wikiUrl) {
-              placeholder.style.display = 'none';
-              if (dynamicImg.src !== wikiUrl) {
-                 dynamicImg.style.opacity = '0';
-                 dynamicImg.src = wikiUrl;
-                 dynamicImg.style.display = 'block';
-                 dynamicImg.onload = () => { dynamicImg.style.opacity = '1'; };
-              }
-           } else {
-              dynamicImg.style.display = 'none';
-              placeholder.style.display = 'flex';
-              placeholder.textContent = leaderName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+      if (inner.dataset.currentSignature !== cacheSignature) {
+         inner.dataset.currentSignature = cacheSignature;
+         inner.innerHTML = "";
+         inner.className = topItems.length > 1 ? "viz-image-inner is-stack" : "viz-image-inner";
+         
+         topItems.forEach((item, idx) => {
+           const wrapper = document.createElement("div");
+           wrapper.className = topItems.length > 1 ? "stack-card" : "single-card";
+           
+           const img = document.createElement("img");
+           img.className = "dynamic-img";
+           img.style.opacity = '0'; 
+           
+           const label = document.createElement("div");
+           label.className = "stack-label";
+           label.textContent = topItems.length > 1 ? `#${idx+1} ${item.name}` : item.name;
+           
+           const placeholder = document.createElement("div");
+           placeholder.className = "img-placeholder";
+           placeholder.textContent = item.name ? item.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() : "??";
+           
+           wrapper.appendChild(placeholder);
+           wrapper.appendChild(img);
+           wrapper.appendChild(label);
+           inner.appendChild(wrapper);
+           
+           // Fetch and Fade Logic
+           if (item.imageUrl) {
+              img.src = item.imageUrl;
+              img.onload = () => { img.style.opacity = '1'; placeholder.style.opacity = '0'; };
+           } else if (item.name) {
+              getWikipediaImageUrl(item.name).then(wikiUrl => {
+                 if (inner.dataset.currentSignature !== cacheSignature) return; // Stale data abort
+                 if (wikiUrl) {
+                    img.src = wikiUrl;
+                    img.onload = () => { img.style.opacity = '1'; placeholder.style.opacity = '0'; };
+                 }
+              });
            }
-        });
+         });
       }
     }
   }
