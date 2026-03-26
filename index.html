@@ -46,6 +46,12 @@
     <div class="main-layout">
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
+        <!-- Mobile drag handle — tap to expand/collapse stats -->
+        <div class="sidebar-handle" id="sidebar-handle" aria-label="Toggle details panel">
+          <div class="handle-bar"></div>
+          <span class="handle-label">Details &amp; Stats</span>
+          <svg class="handle-chevron" id="handle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+        </div>
         <div id="sidebar-content">
           <!-- Dynamic content injected by app.js -->
           <div class="sidebar-loading">

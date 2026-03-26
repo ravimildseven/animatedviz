@@ -599,6 +599,17 @@
         togglePlay();
       }
     });
+
+    // Mobile bottom sheet sidebar toggle
+    const sidebarHandle = document.getElementById("sidebar-handle");
+    const sidebar = document.getElementById("sidebar");
+    if (sidebarHandle && sidebar) {
+      sidebarHandle.addEventListener("click", () => {
+        if (window.innerWidth <= 900) {
+          sidebar.classList.toggle("expanded");
+        }
+      });
+    }
   }
 
   // ===== THEME TOGGLE =====
