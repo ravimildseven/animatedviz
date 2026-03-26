@@ -443,7 +443,7 @@ img { display: block; max-width: 100%; }
 .single-card .dynamic-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Fill the panel — especially important for portrait photos */
+  object-fit: contain; /* Ensure tall buildings are fully visible, not cropped! */
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   transition: opacity 0.3s ease;
@@ -1009,8 +1009,8 @@ img { display: block; max-width: 100%; }
     border-radius: 18px 18px 0 0;
     padding: 0 !important;
     z-index: 200;
-    /* Collapsed — only handle visible */
-    height: 56px !important;
+    /* Collapsed — handle height + iOS safe area */
+    height: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
     overflow: hidden;
     transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 -4px 32px rgba(0,0,0,0.4);
@@ -1018,7 +1018,8 @@ img { display: block; max-width: 100%; }
   }
 
   .sidebar.expanded {
-    height: 62vh !important;
+    /* Expanded height needs to account for safe area too */
+    height: calc(62vh + env(safe-area-inset-bottom, 0px)) !important;
     overflow-y: auto;
   }
 
@@ -1030,6 +1031,8 @@ img { display: block; max-width: 100%; }
     gap: 8px;
     height: 56px;
     padding: 0 20px;
+    /* Add top margin/padding to center visually over safe area */
+    margin-bottom: env(safe-area-inset-bottom, 0px);
     cursor: pointer;
     flex-shrink: 0;
     user-select: none;

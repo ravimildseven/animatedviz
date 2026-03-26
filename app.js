@@ -242,7 +242,7 @@
            const img = document.createElement("img");
            img.className = "dynamic-img";
            // Critical: must be block-level + fill the card before transition
-           img.style.cssText = 'display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.4s ease; border-radius:inherit;';
+           img.style.cssText = 'display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity 0.4s ease; border-radius:inherit;';
            
            const label = document.createElement("div");
            label.className = "stack-label";
