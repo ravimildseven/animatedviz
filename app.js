@@ -571,6 +571,17 @@
       }
     });
 
+    // UX Enhancement: Auto-pause gracefully if the user tries to read stats
+    const vizContainer = document.getElementById("viz-container");
+    if (vizContainer) {
+      vizContainer.addEventListener("mouseenter", () => {
+        if (state.isPlaying) stopPlay();
+      });
+      vizContainer.addEventListener("touchstart", () => {
+        if (state.isPlaying) stopPlay();
+      }, { passive: true });
+    }
+
     // Keyboard navigation
     document.addEventListener("keydown", (e) => {
       if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
